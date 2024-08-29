@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class ModelHasSetting extends Model
 {
-    protected $table = config('model_settings.table');
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->table =  config('model_settings.table')  ?: parent::getTable();
+    }
 
     protected $fillable = [
         'payload',
