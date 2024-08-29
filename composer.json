@@ -1,0 +1,25 @@
+{
+    "name": "dkvhin/laravel-model-settings",
+    "type": "library",
+    "description" : "A library use for allocating settings per model, this is use primarily for authenticated users model",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Dkvhin\\LaravelModelSettings\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ervin Musngi",
+            "email": "ervinm@d7softwaresolutions.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php" : "^7.4|^8.0",
+        "illuminate/database" : "^10.0|^11.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^2.9"
+    }
+}

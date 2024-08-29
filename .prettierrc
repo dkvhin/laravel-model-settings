@@ -1,0 +1,13 @@
+{
+    "tabWidth": 4,
+    "useTabs": true,
+    "printWidth": 500,
+    "overrides": [
+        {
+            "files": "*.html",
+            "options": {
+                "parser": "angular"
+            }
+        }
+    ]
+}
