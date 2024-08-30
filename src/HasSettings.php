@@ -20,6 +20,7 @@ interface HasSettings
      */
     public function saveSettings(ModelSettings $settings): void;
 
+    
     public function _settings(): MorphMany;
 
     /**

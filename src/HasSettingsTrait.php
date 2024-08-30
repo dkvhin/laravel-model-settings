@@ -47,7 +47,12 @@ trait HasSettingsTrait
             /**
              * @var \Dkvhin\LaravelModelSettings\ModelSettings
              */
-            $result = Cache::get($cacheKey);
+            $result = unserialize(Cache::get($cacheKey));
+            
+            if (!$result instanceof ModelSettings) {
+                throw new CouldNotUnserializeModelSettings();
+            }
+
             $result->setModel($this);
             $this->loadedSettings[$abstract] = $result;
             return $result;
@@ -61,13 +66,8 @@ trait HasSettingsTrait
         // add null values to the properies via reflection
         $new = $this->populateFields($new);
 
-        if ($setting != null) {
-            $payload = unserialize($setting->payload);
-
-            if (! $payload instanceof ModelSettings) {
-                throw new CouldNotUnserializeModelSettings();
-            }
-
+        if ($setting != null && $setting->payload != null) {
+            $payload = json_decode($setting->payload);
             foreach ($payload as $key => $value) {
                 $new->{$key} = $value;
             }
