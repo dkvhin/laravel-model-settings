@@ -29,7 +29,7 @@ trait HasSettingsTrait
      * @param  TClass $settings
      * @return TClass
      */
-    private function getCacheKey(ModelSettings $settings): string
+    private function getCacheKey($settings): string
     {
         return 'model_settings_' .  md5(self::class . '_' . $this->id . '_' . $settings::group());
     }
@@ -41,10 +41,10 @@ trait HasSettingsTrait
 
     /**
      * @template TClass of \Dkvhin\LaravelModelSettings\ModelSettings
-     * @param  class-string<TClass>|\Dkvhin\LaravelModelSettings\ModelSettings $abstract
+     * @param  class-string<TClass>
      * @return TClass
      */
-    public function settings(ModelSettings $abstract): mixed
+    public function settings($abstract): mixed
     {
         // check if the settings is already loaded in memory
         if (isset($this->loadedSettings[$abstract])) {
@@ -112,7 +112,7 @@ trait HasSettingsTrait
             $setting->save();
         }
 
-        $this->saveCache($setting);
+        $this->saveCache($settings);
     }
 
     /**
@@ -120,7 +120,7 @@ trait HasSettingsTrait
      * @param  TClass $settings
      * @return TClass
      */
-    private function saveCache(ModelSettings $settings): void
+    private function saveCache($settings): void
     {
         if (config('model_settings.cache.enabled')) {
             $cacheKey = $this->getCacheKey($settings);

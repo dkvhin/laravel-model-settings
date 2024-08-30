@@ -13,7 +13,6 @@ interface HasSettings
      */
     public function settings($abstract): mixed;
 
-
     /**
      * @template TClass of \Dkvhin\LaravelModelSettings\ModelSettings
      * @param  TClass $settings
