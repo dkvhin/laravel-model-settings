@@ -2,12 +2,15 @@
 
 namespace Dkvhin\LaravelModelSettings;
 
+use Dkvhin\LaravelModelSettings\Exceptions\MissingModelException;
+
 abstract class ModelSettings
 {
     /**
      * @var \Dkvhin\LaravelModelSettings\HasSettings
      */
-    private mixed $model;
+    private mixed $model = null;
+
     abstract public static function group(): string;
 
     /**
@@ -20,6 +23,10 @@ abstract class ModelSettings
 
     public function save(): void
     {
-        $this->model->saveSettings($this);
+        if ($this->model != null) {
+            $this->model->saveSettings($this);
+        }
+
+        throw new MissingModelException();
     }
 }
