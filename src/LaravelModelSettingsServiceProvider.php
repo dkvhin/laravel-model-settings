@@ -1,7 +1,6 @@
 <?php
 
 namespace Dkvhin\LaravelModelSettings;
-use AuthenticatedUserListener;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelModelSettingsServiceProvider extends ServiceProvider
@@ -20,7 +19,7 @@ class LaravelModelSettingsServiceProvider extends ServiceProvider
 
         \Illuminate\Support\Facades\Event::listen(
             \Illuminate\Auth\Events\Authenticated::class,
-            AuthenticatedUserListener::class
+            \Dkvhin\LaravelModelSettings\Listener\AuthenticatedUserListener::class
         );
     }
 
