@@ -8,7 +8,7 @@ interface HasSettings
 {
     /**
      * @template TClass of \Dkvhin\LaravelModelSettings\ModelSettings
-     * @param  class-string<TClass> $abstract
+     * @param  class-string<TClass>|\Dkvhin\LaravelModelSettings\ModelSettings $abstract
      * @return TClass
      */
     public function settings($abstract): mixed;
@@ -20,7 +20,7 @@ interface HasSettings
      */
     public function saveSettings(ModelSettings $settings): void;
 
-    
+
     public function _settings(): MorphMany;
 
     /**
