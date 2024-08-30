@@ -30,7 +30,7 @@ trait HasSettingsTrait
     private array $loadedSettings = [];
 
     /**
-     * @template TClass of \App\Settings\Models\ModelSettings
+     * @template TClass of \Dkvhin\LaravelModelSettings\ModelSettings
      * @param  class-string<TClass> $abstract
      * @return TClass
      */
@@ -44,7 +44,12 @@ trait HasSettingsTrait
         $cacheKey = 'model_settings_' .  md5(self::class . '_' . $this->id . '_' . $abstract::group());
 
         if (config('model_settings.cache.enabled') &&  Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
+            /**
+             * @var \Dkvhin\LaravelModelSettings\ModelSettings
+             */
+            $result = Cache::get($cacheKey);
+            $result->setModel($this);
+            return $result;
         }
 
         $setting = $this->_settings()->where([
@@ -77,8 +82,8 @@ trait HasSettingsTrait
     }
 
     /**
-     * @template TClass of \App\Settings\Models\ModelSettings
-     * @param  TClass $object
+     * @template TClass of \Dkvhin\LaravelModelSettings\ModelSettings
+     * @param  TClass $settings
      * @return TClass
      */
     public function saveSettings(ModelSettings $settings): void
@@ -101,7 +106,7 @@ trait HasSettingsTrait
     }
 
     /**
-     * @template TClass of \App\Settings\Models\ModelSettings
+     * @template TClass of \Dkvhin\LaravelModelSettings\ModelSettings
      * @param  TClass $object
      * @return TClass
      */
@@ -124,9 +129,6 @@ trait HasSettingsTrait
     }
 
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\App\Models\ModelHasSetting>
-     */
     public function _settings(): MorphMany
     {
         return $this->morphMany(ModelHasSetting::class, 'model');

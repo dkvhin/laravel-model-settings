@@ -1,4 +1,5 @@
 <?php
+
 namespace Dkvhin\LaravelModelSettings\Listener;
 
 use Illuminate\Support\Facades\App;
