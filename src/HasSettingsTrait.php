@@ -25,30 +25,39 @@ trait HasSettingsTrait
     }
 
     /**
+     * @template TClass of \Dkvhin\LaravelModelSettings\ModelSettings
+     * @param  TClass $settings
+     * @return TClass
+     */
+    private function getCacheKey(ModelSettings $settings): string
+    {
+        return 'model_settings_' .  md5(self::class . '_' . $this->id . '_' . $settings::group());
+    }
+
+    /**
      * @var array<mixed>
      */
     private array $loadedSettings = [];
 
     /**
      * @template TClass of \Dkvhin\LaravelModelSettings\ModelSettings
-     * @param  class-string<TClass> $abstract
+     * @param  class-string<TClass>|\Dkvhin\LaravelModelSettings\ModelSettings $abstract
      * @return TClass
      */
-    public function settings($abstract): mixed
+    public function settings(ModelSettings $abstract): mixed
     {
         // check if the settings is already loaded in memory
         if (isset($this->loadedSettings[$abstract])) {
             return $this->loadedSettings[$abstract];
         }
 
-        $cacheKey = 'model_settings_' .  md5(self::class . '_' . $this->id . '_' . $abstract::group());
-
+        $cacheKey = $this->getCacheKey($abstract);
         if (config('model_settings.cache.enabled') &&  Cache::has($cacheKey)) {
             /**
              * @var \Dkvhin\LaravelModelSettings\ModelSettings
              */
             $result = unserialize(Cache::get($cacheKey));
-            
+
             if (!$result instanceof ModelSettings) {
                 throw new CouldNotUnserializeModelSettings();
             }
@@ -74,9 +83,7 @@ trait HasSettingsTrait
         }
 
         $this->loadedSettings[$abstract] = $new;
-        if (config('model_settings.cache.enabled')) {
-            Cache::forever($cacheKey, serialize($new));
-        }
+        $this->saveCache($new);
 
         $new->setModel($this);
         return $new;
@@ -103,6 +110,21 @@ trait HasSettingsTrait
         } else {
             $setting->payload = $payLoad;
             $setting->save();
+        }
+
+        $this->saveCache($setting);
+    }
+
+    /**
+     * @template TClass of \Dkvhin\LaravelModelSettings\ModelSettings
+     * @param  TClass $settings
+     * @return TClass
+     */
+    private function saveCache(ModelSettings $settings): void
+    {
+        if (config('model_settings.cache.enabled')) {
+            $cacheKey = $this->getCacheKey($settings);
+            Cache::forever($cacheKey, serialize($settings));
         }
     }
 
