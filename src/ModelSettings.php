@@ -9,7 +9,7 @@ abstract class ModelSettings
     /**
      * @var \Dkvhin\LaravelModelSettings\HasSettings
      */
-    private mixed $model = null;
+    private mixed $modelSetting = null;
 
     abstract public static function group(): string;
 
@@ -18,15 +18,14 @@ abstract class ModelSettings
      */
     public function setModel($model): void
     {
-        $this->model = $model;
+        $this->modelSetting = $model;
     }
 
     public function save(): void
     {
-        if ($this->model != null) {
-            $this->model->saveSettings($this);
+        if ($this->modelSetting == null) {
+            throw new MissingModelException();
         }
-
-        throw new MissingModelException();
+        $this->modelSetting->saveSettings($this);
     }
 }
