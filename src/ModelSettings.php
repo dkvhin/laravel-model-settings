@@ -5,13 +5,13 @@ namespace Dkvhin\LaravelModelSettings;
 abstract class ModelSettings
 {
     /**
-     * @var \App\Traits\HasSettingsTrait
+     * @var \Dkvhin\LaravelModelSettings\HasSettings
      */
     private mixed $model;
     abstract public static function group(): string;
 
     /**
-     * @param \App\Traits\HasSettingsTrait $model
+     * @param \Dkvhin\LaravelModelSettings\HasSettings $model
      */
     public function setModel($model): void
     {

@@ -1,0 +1,16 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Function config_path not found\\.$#"
+			count: 1
+			path: src/LaravelModelSettingsServiceProvider.php
+
+		-
+			message: "#^Function database_path not found\\.$#"
+			count: 1
+			path: src/LaravelModelSettingsServiceProvider.php
+
+		-
+			message: "#^Function config not found\\.$#"
+			count: 1
+			path: src/ModelHasSetting.php

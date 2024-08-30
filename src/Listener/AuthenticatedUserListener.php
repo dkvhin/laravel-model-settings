@@ -1,9 +1,9 @@
 <?php
 
-use HasSettings;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\Events\Authenticated;
+use Dkvhin\LaravelModelSettings\HasSettings;
 use Dkvhin\LaravelModelSettings\Exceptions\CouldNotUnserializeModelSettings;
 
 class AuthenticatedUserListener

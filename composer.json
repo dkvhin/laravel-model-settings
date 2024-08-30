@@ -28,6 +28,6 @@
         "illuminate/auth": "^10.0|^11.0"
     },
     "require-dev": {
-        "larastan/larastan": "^2.9"
+        "phpstan/phpstan": "^1.12"
     }
 }
