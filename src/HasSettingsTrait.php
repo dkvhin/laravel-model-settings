@@ -144,6 +144,10 @@ trait HasSettingsTrait
                 case 'string':
                     $value = '';
                     break;
+                case 'int':
+                case 'float':
+                    $value = 0;
+                    break;
             }
             $prop->setValue($object, $value);
         }
