@@ -49,6 +49,7 @@ trait HasSettingsTrait
              */
             $result = Cache::get($cacheKey);
             $result->setModel($this);
+            $this->loadedSettings[$abstract] = $result;
             return $result;
         }
 
