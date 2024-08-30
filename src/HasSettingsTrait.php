@@ -8,9 +8,26 @@ use Illuminate\Support\Facades\Cache;
 use Dkvhin\LaravelModelSettings\ModelSettings;
 use Dkvhin\LaravelModelSettings\ModelHasSetting;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Dkvhin\LaravelModelSettings\Exceptions\CouldNotUnserializeModelSettings;
 
 trait HasSettingsTrait
 {
+    /**
+     * @var array<class-string>
+     */
+    protected array $autoLoadSettingClasses = [];
+
+    /**
+     * @return array<class-string>
+     */
+    public function getAutoLoadSettingClasses(): array
+    {
+        return $this->autoLoadSettingClasses;
+    }
+
+    /**
+     * @var array<mixed>
+     */
     private array $loadedSettings = [];
 
     /**
@@ -40,7 +57,12 @@ trait HasSettingsTrait
         $new = $this->populateFields($new);
 
         if ($setting != null) {
-            $payload = json_decode($setting->payload, true);
+            $payload = unserialize($setting->payload);
+
+            if (! $payload instanceof ModelSettings) {
+                throw new CouldNotUnserializeModelSettings();
+            }
+
             foreach ($payload as $key => $value) {
                 $new->{$key} = $value;
             }
@@ -48,7 +70,7 @@ trait HasSettingsTrait
 
         $this->loadedSettings[$abstract] = $new;
         if (config('model_settings.cache.enabled')) {
-            Cache::forever($cacheKey, $new);
+            Cache::forever($cacheKey, serialize($new));
         }
 
         $new->setModel($this);

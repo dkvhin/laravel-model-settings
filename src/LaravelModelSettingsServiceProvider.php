@@ -1,6 +1,7 @@
 <?php
 
 namespace Dkvhin\LaravelModelSettings;
+use AuthenticatedUserListener;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelModelSettingsServiceProvider extends ServiceProvider
@@ -16,5 +17,15 @@ class LaravelModelSettingsServiceProvider extends ServiceProvider
                 __DIR__ . '/../database/migrations/create_model_settings_table.php.stub' => database_path('migrations/2024_08_29_222954_create_system_model_has_settings_table.php'),
             ], 'migrations');
         }
+
+        \Illuminate\Support\Facades\Event::listen(
+            \Illuminate\Auth\Events\Authenticated::class,
+            AuthenticatedUserListener::class
+        );
+    }
+
+    public function register(): void
+    {
+        $this->mergeConfigFrom(__DIR__ . '/../config/model_settings.php', 'model_settings');
     }
 }
