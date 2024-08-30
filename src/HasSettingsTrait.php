@@ -13,16 +13,15 @@ use Dkvhin\LaravelModelSettings\Exceptions\CouldNotUnserializeModelSettings;
 trait HasSettingsTrait
 {
     /**
-     * @var array<class-string>
-     */
-    protected array $autoLoadSettingClasses = [];
-
-    /**
      * @return array<class-string>
      */
     public function getAutoLoadSettingClasses(): array
     {
-        return $this->autoLoadSettingClasses;
+        if (isset($this->autoLoadSettingClasses)) {
+            return $this->autoLoadSettingClasses;
+        }
+
+        return [];
     }
 
     /**
